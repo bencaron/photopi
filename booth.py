@@ -16,7 +16,8 @@ from picamera import PiCamera
 from signal import pause
 
 save_path = os.path.join(os.environ['HOME'], 'photopi')
-blink_time = 1
+time_blink = 1
+time_between_pics = 2
 pin_green_led = 4
 pin_red_led = 17
 pin_photo = 22
@@ -28,12 +29,13 @@ def takePictures(camera, batch):
     print "taking picture for batch %i" % batch
     for x in range(0, nb_pictures):
         camera.capture(os.path.join(save_path, "photo_%s_%s.jpg" % (batch, x)))
+        time.sleep()
 
 def pictureButtonPress(camera, green, red):
     print "in pictureButtonPress"
     batch = time.time()
     green.off()
-    red.blink(blink_time, blink_time, blink_time * nb_pictures, True)
+    red.blink(time_blink, time_blink, time_blink * nb_pictures, True)
     takePictures(camera, batch)
     red.off()
     green.on()
